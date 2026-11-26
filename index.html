@@ -110,6 +110,18 @@ img{display:block;width:100%;height:100%;object-fit:cover}
 .hist-list{margin-top:28px}
 .hist-item{background:#fff;border:1px solid var(--line);border-radius:var(--r-md);margin-bottom:12px;overflow:hidden}
 .hist-head{width:100%;display:flex;align-items:center;gap:12px;padding:15px 18px;background:none;border:0;cursor:pointer;text-align:left;font-size:14px}
+.hist-head-row{display:flex;align-items:stretch}
+.hist-head{flex:1;min-width:0}
+.hist-score{font-size:11px;font-weight:700;border:1px solid;border-radius:99px;padding:2px 9px;white-space:nowrap;flex:none}
+.hist-del{flex:none;align-self:center;margin-right:16px;font-size:12px;color:var(--ink3);border:1px solid var(--line);background:#fff;border-radius:99px;padding:4px 11px;transition:.15s}
+.hist-del:hover{color:#B4453B;border-color:#E8B9B4;background:#FDF3F2}
+.hist-confirm{display:flex;align-items:center;gap:9px;flex-wrap:wrap;padding:0 18px 15px;font-size:12px;color:var(--ink2)}
+.hist-confirm span{flex:1;min-width:180px}
+.hist-confirm button{border-radius:99px;padding:5px 13px;font-size:12px;font-weight:600}
+.hc-no{background:#fff;border:1px solid var(--line);color:var(--ink2)}
+.hc-yes{background:#B4453B;color:#fff}
+.hist-score-tip{font-size:12px;padding:12px 16px 0;font-weight:600;line-height:1.6}
+@media(max-width:620px){.hist-score{font-size:10px;padding:2px 7px}.hist-del{margin-right:12px;padding:4px 9px}}
 .hist-date{font-weight:600}
 .hist-count{color:var(--ink3);font-size:12px;flex:1}
 .hist-arrow{color:var(--green);font-size:12px}
@@ -151,16 +163,15 @@ img{display:block;width:100%;height:100%;object-fit:cover}
 .dishes{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:10px;margin-top:12px}
 .dish{background:#fff;border:1px solid var(--line);border-radius:var(--r-md);padding:15px;text-align:left;transition:.16s;position:relative;min-height:140px;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden}
 .dish:before{content:'';position:absolute;inset:0;background-image:var(--img);background-size:cover;background-position:50% 42%;border-top-left-radius:15px;border-top-right-radius:15px;-webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 55%,rgba(0,0,0,.35) 78%,transparent 100%),linear-gradient(to right,transparent 0%,rgba(0,0,0,.55) 18%,#000 42%);-webkit-mask-composite:source-in;mask-image:linear-gradient(to bottom,#000 0%,#000 55%,rgba(0,0,0,.35) 78%,transparent 100%),linear-gradient(to right,transparent 0%,rgba(0,0,0,.55) 18%,#000 42%);mask-composite:intersect}
-.dish:after{content:'';position:absolute;left:0;right:0;bottom:0;height:60%;background:linear-gradient(0deg,#fff 20%,rgba(255,255,255,.96) 50%,rgba(255,255,255,0) 100%);pointer-events:none}
+.dish:after{content:'';position:absolute;left:0;right:0;bottom:0;height:62%;background:linear-gradient(0deg,#fff 0%,#fff 24%,rgba(255,255,255,.96) 52%,rgba(255,255,255,0) 100%);pointer-events:none}
 .dish>*{position:relative;z-index:2}
-.dish .ico{position:absolute;top:14px;left:16px}
+.dish .ico{position:absolute;top:12px;left:12px;width:32px;height:32px;border-radius:9px;background:rgba(255,255,255,.94);border:1px solid rgba(227,235,228,.9);display:flex;align-items:center;justify-content:center;font-size:18px;line-height:1;box-shadow:0 2px 8px rgba(30,70,45,.06)}
 .dish:hover{border-color:#CFDFCB}
 .dish.sel{border-color:var(--green);box-shadow:0 0 0 2px rgba(46,107,79,.18)}
 .leaf-mode .dish.sel{border-color:var(--leaf);box-shadow:0 0 0 2px rgba(91,140,90,.18)}
 .sun-mode .dish.sel{border-color:var(--sun);box-shadow:0 0 0 2px rgba(232,154,53,.18)}
 .dish .ico{font-size:20px;line-height:1}
-.dish .nm{font-size:15px;font-weight:600;margin-top:10px;line-height:1.35}
-.dish .meta{font-size:11px;color:var(--ink2);margin-top:4px}
+.dish-foot{display:flex;align-items:baseline;justify-content:space-between;gap:8px;width:100%;margin-top:auto;padding-top:36px}.dish .nm{font-size:15px;font-weight:600;line-height:1.35;min-width:0;flex:1}.dish .meta{font-size:11px;color:var(--ink2);white-space:nowrap;flex:none}
 .dish .tick{position:absolute;right:13px;top:13px;width:18px;height:18px;border-radius:50%;border:1px solid var(--line);background:#fff;font-size:11px;color:transparent;display:flex;align-items:center;justify-content:center}
 .dish.sel .tick{background:var(--green);border-color:var(--green);color:#fff}
 .leaf-mode .dish.sel .tick{background:var(--leaf);border-color:var(--leaf)}
@@ -253,6 +264,7 @@ img{display:block;width:100%;height:100%;object-fit:cover}
   .dishes{grid-template-columns:repeat(2,1fr);gap:9px}
   .dish{min-height:132px;padding:14px}
   .dish .nm{font-size:14px}
+  .dish .ico{width:28px;height:28px;font-size:16px;top:10px;left:10px}
   .hero-image{height:210px}
   .person{min-height:260px}
   .person .pc{padding:22px}
@@ -717,11 +729,22 @@ function snapshotPerson(p){
 }
 function archiveToday(cb){
   cloudRead(function(data){
-    if(!data)data={version:1,records:{}};
-    if(!data.records)data.records={};
+    if(!data||typeof data!=='object')data={version:1,records:{}};
+    if(!data.records||typeof data.records!=='object')data.records={};
     var d=todayStr();
-    data.records[d]={yang:snapshotPerson('yang'),zheng:snapshotPerson('zheng'),
-      agreed:!!state.agreed,ts:Date.now()};
+    var prev=data.records[d]||{};
+    // 跨设备合并：本机有选择的那一方覆盖云端；本机没选的那一方保留云端已有数据
+    function hasPick(p){
+      return MEALS.some(function(m){return ((state.selections[p]&&state.selections[p][m.k])||[]).length>0})
+        || Object.keys(state.customs[p]||{}).some(function(k){return (state.customs[p][k]||[]).length>0});
+    }
+    var rec={
+      yang:hasPick('yang')?snapshotPerson('yang'):(prev.yang||null),
+      zheng:hasPick('zheng')?snapshotPerson('zheng'):(prev.zheng||null),
+      agreed:!!state.agreed||!!prev.agreed,
+      ts:Date.now()
+    };
+    data.records[d]=rec;
     cloudWrite(data,function(ok){if(cb)cb(ok)});
   });
 }
@@ -734,7 +757,7 @@ function allowed(d,p){return !(p==='zheng'&&d.bad&&d.bad.length)}
 function toast(m){var t=document.getElementById('toast');t.textContent=m;t.className='toast show';setTimeout(function(){t.className='toast'},1800)}
 function go(v){['home','menu','done','compare','plan','history'].forEach(function(x){document.getElementById(x).classList.toggle('hidden',x!==v)});window.scrollTo(0,0)}
 /* ===== 历史记录（日历 + 列表） ===== */
-var HIST={data:null,openDay:null};
+var HIST={data:null,openDay:null,confirmDel:null};
 function openHistory(){go('history');document.getElementById('historyBody').innerHTML='<div class="hist-loading">正在读取云端存档…</div>';refreshHistory()}
 function refreshHistory(){
   cloudRead(function(data){
@@ -777,11 +800,21 @@ function renderHistory(){
     var r=recs[d],open=HIST.openDay===d;
     var dishCount=0;
     ['yang','zheng'].forEach(function(p){MEALS.forEach(function(m){dishCount+=(r[p]&&r[p][m.k]&&r[p][m.k].ids||[]).length})});
+    var hs=healthScore(r);
+    var scoreHtml=hs?('<span class="hist-score" style="color:'+hs.color+';border-color:'+hs.color+'33;background:'+hs.color+'12" title="'+hs.tip+'">健康 '+hs.score+' · '+hs.level+'</span>'):'';
     list+='<div class="hist-item">'
-      +'<button class="hist-head" onclick="toggleDay(\''+d+'\')"><span class="hist-date">'+d+'</span>'
-      +'<span class="hist-count">'+dishCount+' 道菜</span><span class="hist-arrow">'+(open?'收起':'展开')+'</span></button>';
+      +'<div class="hist-head-row"><button class="hist-head" onclick="toggleDay(\''+d+'\')"><span class="hist-date">'+d+'</span>'
+      +scoreHtml
+      +'<span class="hist-count">'+dishCount+' 道菜</span><span class="hist-arrow">'+(open?'收起':'展开')+'</span></button>'
+      +'<button class="hist-del" onclick="askDeleteDay(\''+d+'\')" title="删除这条存档">删除</button></div>';
+    if(HIST.confirmDel===d){
+      list+='<div class="hist-confirm"><span>确定删除 '+d+' 这一天的存档吗？删除后无法恢复。</span>'
+        +'<button class="hc-no" onclick="cancelDeleteDay()">取消</button>'
+        +'<button class="hc-yes" onclick="deleteDay(\''+d+'\')">确定删除</button></div>';
+    }
     if(open){
       list+='<div class="hist-detail">'
+        +(hs?('<div class="hist-score-tip" style="color:'+hs.color+'">健康评价：'+hs.score+' 分 · '+hs.level+'　'+hs.tip+'</div>'):'')
         +'<div class="hist-person sun"><div class="hist-pname">☀️ 小赵</div>'+mealSummary(r.yang)+'</div>'
         +'<div class="hist-person leaf"><div class="hist-pname">🌿 小叶</div>'+mealSummary(r.zheng)+'</div>'
         +'</div>';
@@ -792,6 +825,72 @@ function renderHistory(){
   body.innerHTML=cal+list;
 }
 function toggleDay(d){HIST.openDay=(HIST.openDay===d?null:d);renderHistory()}
+/* ---- 删除单条历史存档：先确认，再删除并同步云端 ---- */
+function askDeleteDay(d){HIST.confirmDel=d;renderHistory()}
+function cancelDeleteDay(){HIST.confirmDel=null;renderHistory()}
+function deleteDay(d){
+  if(!d)return;
+  // 只删除这一天，其他记录原样保留
+  var data=HIST.data;
+  if(!data||!data.records||!data.records[d]){HIST.confirmDel=null;renderHistory();toast('这条存档已不存在');return}
+  try{delete data.records[d]}catch(e){toast('删除失败，请重试');return}
+  if(HIST.openDay===d)HIST.openDay=null;
+  HIST.confirmDel=null;
+  saveCache(data);          // 先更新本地缓存，刷新立即生效
+  renderHistory();          // 立即更新列表展示
+  cloudWrite(data,function(ok){
+    if(ok)toast('已删除 '+d+' 的存档');
+    else toast('已在本机删除，云端同步失败，联网后重试会再同步');
+  });
+}
+/* ---- 自动生成健康程度评价：完全基于存档数据，无需手动打分 ---- */
+function healthScore(rec){
+  try{
+    if(!rec)return null;
+    var people=['yang','zheng'];
+    function snapExists(p){return !!rec[p]}
+    function countMeals(p){
+      var n=0;MEALS.forEach(function(m){if(((rec[p]&&rec[p][m.k]&&rec[p][m.k].ids)||[]).length>0)n++});return n;
+    }
+    var any=people.some(snapExists);
+    if(!any)return null;
+    // 1) 餐次覆盖（两人合计最多 8 餐次）
+    var mealCover=0;people.forEach(function(p){mealCover+=countMeals(p)});
+    var sCover=Math.round(Math.min(mealCover,8)/8*40);
+    // 2) 菜品多样性（去重）
+    var idset={};people.forEach(function(p){
+      MEALS.forEach(function(m){((rec[p]&&rec[p][m.k]&&rec[p][m.k].ids)||[]).forEach(function(id){idset[id]=1})});
+    });
+    var uniq=Object.keys(idset).length;
+    var sDiverse=Math.round(Math.min(uniq,10)/10*20);
+    // 3) 结构均衡：蛋白/主食/蔬菜/其他 四类是否覆盖
+    var cats={};people.forEach(function(p){
+      MEALS.forEach(function(m){((rec[p]&&rec[p][m.k]&&rec[p][m.k].ids)||[]).forEach(function(id){
+        var d=dish(id);if(d&&d.cat)cats[d.cat]=1;
+      })});
+    });
+    var catN=Object.keys(cats).length;
+    var sBalance=Math.round(Math.min(catN,4)/4*20);
+    // 4) 两人是否都参与 + 是否协商一致
+    var both=people.every(snapExists)?6:0;
+    var sAgree=rec.agreed?4:0;
+    // 5) 清淡度：蒸煮凉拌加分，油炸红烧减分
+    var light=0;
+    Object.keys(idset).forEach(function(id){
+      var d=dish(id);if(!d)return;var nm=d.name||'';
+      if(/蒸|煮|拌|灼|炖|清炒|生|白灼|水煮/.test(nm))light+=0.5;
+      if(/炸|红烧|干锅|爆炒/.test(nm))light-=0.5;
+    });
+    var sLight=Math.max(0,Math.min(10,Math.round(5+light)));
+    var score=Math.max(0,Math.min(100,sCover+sDiverse+sBalance+both+sAgree+sLight));
+    var level,tip,color;
+    if(score>=85){level='很健康';color='#2E6B4F';tip='搭配均衡、种类丰富，保持得很好。'}
+    else if(score>=70){level='不错';color='#5B8C5A';tip='整体不错，再补点蔬菜和主食会更稳。'}
+    else if(score>=55){level='还可以';color='#C96A2B';tip='餐次或种类偏少，尽量三餐齐全、颜色多样。'}
+    else{level='待提升';color='#C96A2B';tip='记录较少，试着三餐加餐都选上、蛋白蔬菜搭配。'}
+    return {score:score,level:level,tip:tip,color:color,uniq:uniq,mealCover:mealCover};
+  }catch(e){return null}
+}
 
 
 /* ---- 选餐 ---- */
@@ -812,7 +911,7 @@ function renderMenu(){
     var label=(cat.k==='snack'&&state.meal==='b')?'饮品':cat.n;
     h+='<div class="group"><div class="group-title">'+label+' <small>'+cat.hint+'</small></div><div class="dishes">';
     list.forEach(function(d){var on=chosen.indexOf(d.id)>=0;
-      h+='<button class="dish'+(on?' sel':'')+'" style="--img:url(\''+PHOTO[d.img||'a']+'\')" onclick="toggleDish(\''+d.id+'\')"><span class="tick">✓</span><div class="ico">'+d.ico+'</div><div class="nm">'+d.name+'</div><div class="meta">'+d.time+'</div></button>'});
+      h+='<button class="dish'+(on?' sel':'')+'" style="--img:url(\''+PHOTO[d.img||'a']+'\')" onclick="toggleDish(\''+d.id+'\')"><span class="tick">✓</span><div class="ico">'+d.ico+'</div><div class="dish-foot"><div class="nm">'+d.name+'</div><div class="meta">'+d.time+'</div></div></button>'});
     h+='</div></div>'});
   var customs=state.customs[p][state.meal]||[];
   h+='<div class="openbox"><div class="group-title">开放备注 <small>想吃什么、口味要求，都可以写</small></div>'
