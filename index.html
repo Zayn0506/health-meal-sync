@@ -170,8 +170,8 @@ img{display:block;width:100%;height:100%;object-fit:cover}
 .dish.sel{border-color:var(--green);box-shadow:0 0 0 2px rgba(46,107,79,.18)}
 .leaf-mode .dish.sel{border-color:var(--leaf);box-shadow:0 0 0 2px rgba(91,140,90,.18)}
 .sun-mode .dish.sel{border-color:var(--sun);box-shadow:0 0 0 2px rgba(232,154,53,.18)}
-.dish .ico{font-size:14px;line-height:1;margin-right:6px;vertical-align:-1px}
-.dish-foot{display:flex;align-items:baseline;justify-content:space-between;gap:8px;width:100%;margin-top:auto;padding-top:36px}.dish .nm{font-size:15px;font-weight:600;line-height:1.35;min-width:0;flex:1}.dish .meta{font-size:11px;color:var(--ink2);white-space:nowrap;flex:none}
+.dish .ico{font-size:14px;line-height:1;margin-right:6px;flex:none}
+.dish-foot{display:flex;align-items:baseline;justify-content:space-between;gap:8px;width:100%;margin-top:auto;padding-top:36px}.dish .nm{display:flex;align-items:baseline;min-width:0;flex:1;font-size:15px;font-weight:600;line-height:1.35}.dish .nm-text{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}.dish .meta{font-size:11px;color:var(--ink2);white-space:nowrap;flex:none}
 .dish .tick{position:absolute;right:13px;top:13px;width:18px;height:18px;border-radius:50%;border:1px solid var(--line);background:#fff;font-size:11px;color:transparent;display:flex;align-items:center;justify-content:center}
 .dish.sel .tick{background:var(--green);border-color:var(--green);color:#fff}
 .leaf-mode .dish.sel .tick{background:var(--leaf);border-color:var(--leaf)}
@@ -910,7 +910,7 @@ function renderMenu(){
     var label=(cat.k==='snack'&&state.meal==='b')?'饮品':cat.n;
     h+='<div class="group"><div class="group-title">'+label+' <small>'+cat.hint+'</small></div><div class="dishes">';
     list.forEach(function(d){var on=chosen.indexOf(d.id)>=0;
-      h+='<button class="dish'+(on?' sel':'')+'" style="--img:url(\''+PHOTO[d.img||'a']+'\')" onclick="toggleDish(\''+d.id+'\')"><span class="tick">✓</span><div class="dish-foot"><div class="nm"><span class="ico">'+d.ico+'</span>'+d.name+'</div><div class="meta">'+d.time+'</div></div></button>'});
+      h+='<button class="dish'+(on?' sel':'')+'" style="--img:url(\''+PHOTO[d.img||'a']+'\')" onclick="toggleDish(\''+d.id+'\')"><span class="tick">✓</span><div class="dish-foot"><div class="nm"><span class="ico">'+d.ico+'</span><span class="nm-text" title="'+esc(d.name)+'">'+d.name+'</span></div><div class="meta">'+d.time+'</div></div></button>'});
     h+='</div></div>'});
   var customs=state.customs[p][state.meal]||[];
   h+='<div class="openbox"><div class="group-title">开放备注 <small>想吃什么、口味要求，都可以写</small></div>'
